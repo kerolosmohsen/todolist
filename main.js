@@ -232,17 +232,47 @@ function showPage(pageId) {
 
 // السماح بإضافة مهمة بالضغط على Enter
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('taskInput').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            addTask();
-        }
-    });
+    console.log('✓ DOM Loaded - بدء initialization');
+    
+    const taskInput = document.getElementById('taskInput');
+    if (taskInput) {
+        taskInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+    }
+    
+    // إعادة تحميل البيانات بعد loading كامل الصفحة
+    loadData();
+    moveUnfinishedTasks();
+    renderAllTasks();
+    renderProjects();
+    renderRoutines();
+    renderCourses();
+    updateChallenge();
+    populateTimerCourseSelect();
+    copyRoutineToTodayIfNeeded();
+    updateClockAndTotals();
+    
+    console.log('✓ تم تحميل جميع البيانات');
 });
 
-// بدء التطبيق
-loadData();
-moveUnfinishedTasks();
-renderAllTasks();
+// في حالة أن الـ script يحمل قبل DOM
+if (document.readyState === 'loading') {
+    // سننتظر حتى DOMContentLoaded
+} else {
+    // إذا كان الـ script يحمل بعد DOM
+    loadData();
+    moveUnfinishedTasks();
+    renderAllTasks();
+    renderProjects();
+    renderRoutines();
+    renderCourses();
+    updateChallenge();
+    populateTimerCourseSelect();
+    updateClockAndTotals();
+}
 
 // فحص منتصف الليل كل دقيقة
 setInterval(moveUnfinishedTasks, 60000);
@@ -329,6 +359,7 @@ function deleteProject(id) {
 document.addEventListener('submit', function(e){
     if (e.target && (e.target.id === 'projectForm' || e.target.id === 'projectFormPage')) {
         e.preventDefault();
+        console.log('✓ Project Form submitted');
         const nameEl = document.getElementById('projName') || document.getElementById('projNamePage');
         const descEl = document.getElementById('projDesc') || document.getElementById('projDescPage');
         const name = nameEl ? nameEl.value.trim() : '';
@@ -341,6 +372,7 @@ document.addEventListener('submit', function(e){
         if (nameEl) nameEl.value = '';
         if (descEl) descEl.value = '';
         renderProjects();
+        console.log('✓ Project added:', project);
     }
 });
 
@@ -386,6 +418,7 @@ function deleteRoutine(id) { let list = loadRoutines(); list = list.filter(r=>r.
 document.addEventListener('submit', function(e){
     if (e.target && (e.target.id === 'routineForm' || e.target.id === 'routineFormPage')) {
         e.preventDefault();
+        console.log('✓ Routine Form submitted');
         const textEl = document.getElementById('routineTask') || document.getElementById('routineTitlePage');
         const descEl = document.getElementById('routineDescPage');
         const text = textEl ? textEl.value.trim() : '';
@@ -396,6 +429,7 @@ document.addEventListener('submit', function(e){
         if (textEl) textEl.value = '';
         if (descEl) descEl.value = '';
         renderRoutines();
+        console.log('✓ Routine added:', text);
     }
 });
 
@@ -474,6 +508,7 @@ function deleteCourse(id){ let list = loadCourses(); list = list.filter(c=>c.id!
 document.addEventListener('submit', function(e){
     if (e.target && (e.target.id === 'courseForm' || e.target.id === 'courseFormPage')){
         e.preventDefault();
+        console.log('✓ Course Form submitted');
         const nameEl = document.getElementById('courseName') || document.getElementById('courseNamePage');
         const startEl = document.getElementById('courseStart') || document.getElementById('courseStartPage');
         const endEl = document.getElementById('courseEnd') || document.getElementById('courseEndPage');
@@ -482,9 +517,16 @@ document.addEventListener('submit', function(e){
         const start = startEl.value;
         const end = endEl.value;
         if(!name||!start||!end) return alert('املأ جميع حقول الكورس');
-        const list = loadCourses(); list.push({ id: Date.now(), name, start, end, desc: descEl?descEl.value.trim():'' }); saveCourses(list);
-        if (nameEl) nameEl.value=''; if (startEl) startEl.value=''; if (endEl) endEl.value=''; if (descEl) descEl.value='';
+        const list = loadCourses(); 
+        const course = { id: Date.now(), name, start, end, desc: descEl?descEl.value.trim():'' };
+        list.push(course); 
+        saveCourses(list);
+        if (nameEl) nameEl.value=''; 
+        if (startEl) startEl.value=''; 
+        if (endEl) endEl.value=''; 
+        if (descEl) descEl.value='';
         renderCourses();
+        console.log('✓ Course added:', course);
     }
 });
 
@@ -535,6 +577,16 @@ const resetBtn = document.getElementById('resetTimer'); if (resetBtn) resetBtn.a
 const startBtn = document.getElementById('startTimer'); if (startBtn) startBtn.addEventListener('click', startStudy);
 const stopBtn = document.getElementById('stopTimer'); if (stopBtn) stopBtn.addEventListener('click', stopStudy);
 populateTimerCourseSelect();
+
+// تأكد من تحديث البيانات بعد تحميل الصفحة
+setInterval(function() {
+    updateChallenge();
+    updateClockAndTotals();
+}, 500);
+
+// إذا كانت الصفحة محملة بالفعل، استدعِ التحديث فوراً
+updateClockAndTotals();
+updateChallenge();
 
 // ------------------- مؤقت المذاكرة -------------------
 let studyStart = null;
