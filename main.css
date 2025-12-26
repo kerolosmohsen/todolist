@@ -1,0 +1,374 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #e8e8e8;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    padding: 30px 0;
+    border-bottom: 2px solid #0f3460;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2.5em;
+    color: #00d9ff;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+}
+
+.progress-info {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.progress-item {
+    background: rgba(15, 52, 96, 0.5);
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1px solid #0f3460;
+}
+
+.progress-item span {
+    color: #00d9ff;
+    font-weight: bold;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+nav button {
+    background: #0f3460;
+    color: #e8e8e8;
+    border: 2px solid #00d9ff;
+    padding: 12px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+nav button:hover {
+    background: #00d9ff;
+    color: #1a1a2e;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 217, 255, 0.4);
+}
+
+nav button.active {
+    background: #00d9ff;
+    color: #1a1a2e;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.section-title {
+    font-size: 1.8em;
+    color: #00d9ff;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #0f3460;
+}
+
+.task-input-container {
+    background: rgba(15, 52, 96, 0.3);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    border: 1px solid #0f3460;
+}
+
+.task-input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 12px;
+    background: #16213e;
+    border: 2px solid #0f3460;
+    border-radius: 8px;
+    color: #e8e8e8;
+    font-size: 1em;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #00d9ff;
+    box-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
+}
+
+select {
+    padding: 12px;
+    background: #16213e;
+    border: 2px solid #0f3460;
+    border-radius: 8px;
+    color: #e8e8e8;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.btn {
+    padding: 12px 25px;
+    background: #00d9ff;
+    color: #1a1a2e;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background: #00b8d4;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 217, 255, 0.4);
+}
+
+.tasks-list {
+    display: grid;
+    gap: 15px;
+}
+
+.task-item {
+    background: rgba(15, 52, 96, 0.5);
+    padding: 15px 20px;
+    border-radius: 10px;
+    border: 1px solid #0f3460;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+}
+
+.task-item:hover {
+    background: rgba(15, 52, 96, 0.7);
+    border-color: #00d9ff;
+    transform: translateX(-5px);
+}
+
+.task-item.completed {
+    opacity: 0.7;
+    text-decoration: line-through;
+}
+
+.checkbox {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    accent-color: #00d9ff;
+}
+
+.task-text {
+    flex: 1;
+    font-size: 1.1em;
+}
+
+.task-type {
+    background: #00d9ff;
+    color: #1a1a2e;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    font-weight: bold;
+}
+
+.task-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-done {
+    background: #00ff88;
+    color: #1a1a2e;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-done:hover {
+    background: #00dd77;
+    transform: scale(1.1);
+}
+
+.btn-delete {
+    background: #ff4757;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-delete:hover {
+    background: #ee5a6f;
+    transform: scale(1.1);
+}
+
+.productivity-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: rgba(15, 52, 96, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #0f3460;
+    text-align: center;
+}
+
+.stat-card h3 {
+    color: #00d9ff;
+    margin-bottom: 10px;
+}
+
+.stat-number {
+    font-size: 2.5em;
+    color: #00ff88;
+    font-weight: bold;
+}
+
+.completed-tasks {
+    background: rgba(15, 52, 96, 0.3);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #0f3460;
+}
+
+.completed-task-item {
+    background: rgba(0, 255, 136, 0.1);
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border-right: 4px solid #00ff88;
+}
+
+.task-date {
+    color: #00d9ff;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #888;
+}
+
+.empty-state h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.8em;
+    }
+
+    .task-input-group {
+        flex-direction: column;
+    }
+
+    .task-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .task-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+/* إضافات لتصميم التحدي والروتين والكورسات */
+.challenge-row { display:flex; gap:20px; margin:20px 0; flex-wrap:wrap; }
+.challenge-box { flex:1; background: rgba(0,0,0,0.3); padding:18px; border-radius:10px; border:1px solid #0f3460; }
+.timer-box { width:260px; background: rgba(0,0,0,0.3); padding:12px; border-radius:10px; border:1px solid #0f3460; text-align:center; }
+.timer-box #clock { font-size:1.1em; margin-bottom:8px; color:#00d9ff; }
+.meta-row { display:flex; gap:20px; margin-bottom:20px; flex-wrap:wrap; }
+.meta-box { flex:1; min-width:260px; background: rgba(15,52,96,0.4); padding:14px; border-radius:10px; border:1px solid #0f3460; }
+.meta-box form { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+.meta-box input[type="text"], .meta-box input[type="date"], .meta-box select { padding:8px; border-radius:6px; border:1px solid #0f3460; background:#16213e; color:#e8e8e8; }
+.meta-box button { padding:8px 12px; }
+
+@media (max-width:900px){ .challenge-row{flex-direction:column;} .meta-row{flex-direction:column;} }
+
+/* تعديل أحجام و ألوان المربعات لتكون أكبر وأغمق */
+.task-item,
+.meta-box,
+.challenge-box,
+.timer-box,
+.stat-card,
+.completed-task-item,
+.empty-state {
+    background: linear-gradient(180deg, rgba(4,18,30,0.95), rgba(8,28,44,0.95));
+    border: 1px solid rgba(0,140,200,0.12);
+    padding: 20px 22px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(2,12,20,0.45);
+}
+
+.task-item { padding: 22px; gap: 18px; min-height: 64px; }
+.meta-box { padding: 18px 20px; min-height: 120px; }
+.challenge-box { padding: 22px; min-width: 320px; }
+.timer-box { padding: 16px 18px; min-width: 280px; }
+.stat-card { padding: 24px; min-height: 120px; }
+.completed-task-item { padding: 18px; border-left: 4px solid rgba(0,200,160,0.12); }
+
+.task-text { color: #dbeffc; font-size: 1.05em; }
+.task-type { background: rgba(0,150,200,0.12); color: #aee9ff; }
+
+/* ألوان أزرار خافتة متناسقة مع الخلفية */
+.btn { background: linear-gradient(90deg,#04b7e6,#06d6ff); color:#042032; }
+.btn-done { background: linear-gradient(90deg,#0fd090,#35e39d); color:#042032; }
+.btn-delete { background: linear-gradient(90deg,#ff6b6b,#ff4d6d); }
+
+@media (max-width:768px) {
+    .task-item { min-height: auto; padding: 16px; }
+    .meta-box, .challenge-box, .timer-box { min-width: auto; }
+}

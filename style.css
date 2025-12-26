@@ -1,0 +1,255 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0a0a0f 0%, #0d1117 100%);
+    min-height: 100vh;
+    color: white;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.title {
+    font-size: 2.5rem;
+    background: linear-gradient(90deg, #00a8cc, #5a4fcf);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.stats-bar {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(0, 168, 204, 0.3);
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-label {
+    color: #00a8cc;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.tabs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.tab {
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(0, 168, 204, 0.3);
+    border-radius: 15px;
+    padding: 15px 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tab:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 168, 204, 0.3);
+}
+
+.tab.active {
+    background: #00a8cc;
+    border-color: #00a8cc;
+    color: #0a0a0f;
+    font-weight: bold;
+}
+
+.month-selector {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.month-selector select {
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(0, 168, 204, 0.3);
+    border-radius: 10px;
+    padding: 12px 25px;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    outline: none;
+}
+
+.month-selector select option {
+    background: #0d1117;
+    color: white;
+}
+
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.day-card {
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(0, 168, 204, 0.3);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.day-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 168, 204, 0.3);
+}
+
+.day-card.completed {
+    background: linear-gradient(135deg, #00a8cc, #007a99);
+    border-color: #00a8cc;
+}
+
+.day-card.missed {
+    background: rgba(200, 40, 40, 0.15);
+    border-color: rgba(200, 40, 40, 0.5);
+}
+
+.btn-delete-day {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background: rgba(255, 70, 70, 0.8);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-delete-day:hover {
+    background: rgba(255, 50, 50, 1);
+    transform: scale(1.1);
+}
+
+.day-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.day-label {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.status-icon {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-size: 1.2rem;
+}
+
+.summary {
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(0, 168, 204, 0.3);
+    border-radius: 15px;
+    padding: 25px;
+    margin-top: 30px;
+}
+
+.summary h3 {
+    color: #00a8cc;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.summary-item:last-child {
+    border-bottom: none;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00a8cc, #007a99);
+    transition: width 0.3s;
+    border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 1.8rem;
+    }
+
+    .days-grid {
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+        gap: 10px;
+    }
+
+    .day-card {
+        padding: 15px 10px;
+    }
+
+    .stats-bar {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
