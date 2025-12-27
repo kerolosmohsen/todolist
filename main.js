@@ -72,6 +72,7 @@ function addTask() {
 }
 
 // إنجاز مهمة
+// ملاحظة مهمة: المهام الأساسية تبقى في قسمها حتى لو اكتملت - لا تُنقل للمهام المكتملة
 function completeTask(id, type) {
     let task;
     const lists = type === 'important' ? data.tasks.important : 
@@ -79,10 +80,17 @@ function completeTask(id, type) {
     
     const index = lists.findIndex(t => t.id === id);
     if (index !== -1) {
-        task = lists.splice(index, 1)[0];
-        task.completed = true;
-        task.completedDate = new Date().toISOString();
-        data.tasks.completed.push(task);
+        if (type === 'important') {
+            // المهام الأساسية: علّمها كمكتملة لكن ابقها في القسم
+            lists[index].completed = true;
+            lists[index].completedDate = new Date().toISOString();
+        } else {
+            // المهام الأخرى: انقلها إلى المهام المكتملة
+            task = lists.splice(index, 1)[0];
+            task.completed = true;
+            task.completedDate = new Date().toISOString();
+            data.tasks.completed.push(task);
+        }
         saveData();
         renderAllTasks();
     }
@@ -127,8 +135,11 @@ function renderTasks(tasks, containerId, type) {
         return;
     }
 
-    container.innerHTML = tasks.map(task => `
-        <div class="task-item">
+    container.innerHTML = tasks.map(task => {
+        // تحديد الفئة (class) بناءً على حالة المهمة ونوعها
+        const taskClasses = type === 'important' && task.completed ? 'task-item completed-important' : 'task-item';
+        return `
+        <div class="${taskClasses}">
             <input type="checkbox" class="checkbox" ${task.completed ? 'checked disabled' : ''}>
             <div class="task-text">${task.text}</div>
             <span class="task-type">${type === 'important' ? 'أساسية' : type === 'unfinished' ? 'مؤجلة' : 'يومية'}</span>
@@ -137,7 +148,8 @@ function renderTasks(tasks, containerId, type) {
                 <button class="btn-delete" onclick="deleteTask(${task.id}, '${type}')">✕</button>
             </div>
         </div>
-    `).join('');
+    `;
+    }).join('');
 }
 
 // عرض المهام المكتملة
@@ -449,16 +461,20 @@ function copyRoutineToTodayIfNeeded(){
 }
 
 // عند تحميل الصفحة تحرك مهمات اليوم السابقة غير المكتملة إلى المؤجلة
+// لكن المهام الأساسية تبقى دائمة ولا تُنقل أبداً
 function movePreviousUnfinishedToDeferred(){
     const lastCheck = localStorage.getItem('lastMidnightCheck');
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     if (!lastCheck || new Date(lastCheck) < today) {
         // تم تغيير اليوم، أي مهمات لم تكتمل في data.tasks.today ستذهب للمؤجلة
+        // لكن نبقي المهام الأساسية (important tasks) ثابتة
         if (data.tasks.today && data.tasks.today.length) {
             data.tasks.unfinished.push(...data.tasks.today.filter(t=>!t.completed));
             data.tasks.today = [];
         }
+        // المهام الأساسية تبقى كما هي - لا نحذفها ولا ننقلها
+        // important tasks remain permanent and untouched
         localStorage.setItem('lastMidnightCheck', today.toISOString());
         saveData();
         renderAllTasks();
