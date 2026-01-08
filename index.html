@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -831,6 +831,21 @@
             showToast('✅ تمت إضافة المشروع');
         }
 
+        function updateProjectProgress(id, amount) {
+            const project = projects.find(p => p.id === id);
+            if (project) {
+                project.progress = Math.min(100, Math.max(0, project.progress + amount));
+                if (project.progress === 100) {
+                    project.completed = true;
+                } else {
+                    project.completed = false;
+                }
+                localStorage.setItem('projects', JSON.stringify(projects));
+                renderProjects();
+                updateAllStats();
+            }
+        }
+
         function toggleProject(id) {
             const project = projects.find(p => p.id === id);
             if (project) {
@@ -839,6 +854,7 @@
                 localStorage.setItem('projects', JSON.stringify(projects));
                 renderProjects();
                 updateAllStats();
+                showToast(project.completed ? '🎉 تم إكمال المشروع!' : '↩️ تم إعادة المشروع');
             }
         }
 
@@ -863,15 +879,22 @@
                     <div class="item-title">${project.name}</div>
                     <div class="item-meta">${project.desc || 'لا يوجد وصف'}</div>
                     <div class="item-meta">الموعد النهائي: ${project.deadline || 'غير محدد'}</div>
-                    ${project.completed ? '<span class="badge badge-completed">مكتمل</span>' : '<span class="badge badge-progress">قيد العمل</span>'}
+                    ${project.completed ? '<span class="badge badge-completed">مكتمل ✓</span>' : '<span class="badge badge-progress">قيد العمل</span>'}
                     <div class="progress-bar">
                         <div class="progress-fill" style="width: ${project.progress}%"></div>
                     </div>
-                    <div class="item-actions" style="margin-top: 15px;">
-                        <button class="btn btn-success btn-small" onclick="toggleProject(${project.id})">
-                            ${project.completed ? '↩️ إعادة' : '✓ إكمال'}
-                        </button>
-                        <button class="btn btn-danger btn-small" onclick="deleteProject(${project.id})">🗑️</button>
+                    <div style="text-align: center; margin-top: 5px; color: #94a3b8; font-size: 12px;">${project.progress}%</div>
+                    <div class="item-actions" style="margin-top: 15px; justify-content: space-between; width: 100%;">
+                        <div style="display: flex; gap: 5px;">
+                            <button class="btn btn-primary btn-small" onclick="updateProjectProgress(${project.id}, -10)" title="تقليل 10%">-</button>
+                            <button class="btn btn-primary btn-small" onclick="updateProjectProgress(${project.id}, 10)" title="زيادة 10%">+</button>
+                        </div>
+                        <div style="display: flex; gap: 5px;">
+                            <button class="btn ${project.completed ? 'btn-warning' : 'btn-success'} btn-small" onclick="toggleProject(${project.id})">
+                                ${project.completed ? '↩️ إعادة' : '✓ إكمال'}
+                            </button>
+                            <button class="btn btn-danger btn-small" onclick="deleteProject(${project.id})">🗑️</button>
+                        </div>
                     </div>
                 </div>
             `).join('');
@@ -964,6 +987,7 @@
             courses.push({
                 id: Date.now(),
                 title, platform, progress,
+                completed: false,
                 createdAt: new Date().toISOString()
             });
 
@@ -973,6 +997,31 @@
             document.getElementById('courseProgress').value = '';
             renderCourses();
             showToast('✅ تمت إضافة الكورس');
+        }
+
+        function updateCourseProgress(id, amount) {
+            const course = courses.find(c => c.id === id);
+            if (course) {
+                course.progress = Math.min(100, Math.max(0, course.progress + amount));
+                if (course.progress === 100) {
+                    course.completed = true;
+                } else {
+                    course.completed = false;
+                }
+                localStorage.setItem('courses', JSON.stringify(courses));
+                renderCourses();
+            }
+        }
+
+        function toggleCourseComplete(id) {
+            const course = courses.find(c => c.id === id);
+            if (course) {
+                course.completed = !course.completed;
+                course.progress = course.completed ? 100 : 0;
+                localStorage.setItem('courses', JSON.stringify(courses));
+                renderCourses();
+                showToast(course.completed ? '🎉 تم إكمال الكورس!' : '↩️ تم إعادة الكورس');
+            }
         }
 
         function deleteCourse(id) {
@@ -991,15 +1040,25 @@
             }
 
             container.innerHTML = courses.map(course => `
-                <div class="project-card">
+                <div class="project-card ${course.completed ? 'completed' : ''}">
                     <div class="item-title">${course.title}</div>
                     <div class="item-meta">المنصة: ${course.platform || 'غير محددة'}</div>
                     <div class="item-meta">التقدم: ${course.progress}%</div>
+                    ${course.completed ? '<span class="badge badge-completed">مكتمل ✓</span>' : ''}
                     <div class="progress-bar">
                         <div class="progress-fill" style="width: ${course.progress}%"></div>
                     </div>
-                    <div class="item-actions" style="margin-top: 15px;">
-                        <button class="btn btn-danger btn-small" onclick="deleteCourse(${course.id})">🗑️</button>
+                    <div class="item-actions" style="margin-top: 15px; justify-content: space-between; width: 100%;">
+                        <div style="display: flex; gap: 5px;">
+                            <button class="btn btn-primary btn-small" onclick="updateCourseProgress(${course.id}, -10)" title="تقليل 10%">-</button>
+                            <button class="btn btn-primary btn-small" onclick="updateCourseProgress(${course.id}, 10)" title="زيادة 10%">+</button>
+                        </div>
+                        <div style="display: flex; gap: 5px;">
+                            <button class="btn ${course.completed ? 'btn-warning' : 'btn-success'} btn-small" onclick="toggleCourseComplete(${course.id})">
+                                ${course.completed ? '↩️ إعادة' : '✓ إكمال'}
+                            </button>
+                            <button class="btn btn-danger btn-small" onclick="deleteCourse(${course.id})">🗑️</button>
+                        </div>
                     </div>
                 </div>
             `).join('');
