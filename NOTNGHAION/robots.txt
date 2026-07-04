@@ -1,0 +1,22 @@
+# Robots.txt for University of Nottingham Website
+
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /css/
+Allow: /imge/
+Allow: /js/
+Allow: /scripr.js
+
+Disallow: /private/
+Disallow: /admin/
+Disallow: /*.pdf$
+
+# Sitemap location
+Sitemap: https://your-website.com/sitemap.xml
+
+# Crawl delay (optional)
+Crawl-delay: 0
+
+# Request rate (optional)
+Request-rate: 1/10s
